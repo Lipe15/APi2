@@ -7,7 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/Pacientes")
 public class PacienteController {
-    public String sayHello(){
-        return "Olá Acampamento Dev";
-    }
+
 }

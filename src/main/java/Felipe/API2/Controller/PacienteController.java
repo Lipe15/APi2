@@ -1,6 +1,7 @@
 package Felipe.API2.Controller;
 
 import Felipe.API2.entity.Paciente;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,11 +28,29 @@ public class PacienteController {
         return null;
     }
 
-
-
     @PostMapping
     public void inserir(@RequestBody Paciente paciente){
         listaDePacientes.add(paciente);
+
+    }
+    @PutMapping("/{cpf}")
+            public void atualizar(@RequestBody Paciente atualizarPaciente, @PathVariable String cpf){
+        for (Paciente paciente : listaDePacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                BeanUtils.copyProperties(atualizarPaciente, paciente);
+            }
+        }
+
+
+    }
+    @PatchMapping("/{cpf}")
+    public void atualizar(@RequestBody Paciente atualizarPaciente, @PathVariable String cpf){
+        for (Paciente paciente : listaDePacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                BeanUtils.copyProperties(atualizarPaciente, paciente);
+            }
+        }
+
 
     }
 }

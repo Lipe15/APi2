@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -24,61 +25,62 @@ public class PacienteController {
         return pacienteService.obterTodos();
     }
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<Paciente> obterPacientePeloCpf(@PathVariable String cpf) {
-        Paciente paciente = pacienteService.selecionarPacientePeloCpf(cpf);
+    @GetMapping("/{id}")
+    public ResponseEntity<Paciente> obterPacientePeloId(@Valid @PathVariable String id) {
+        Optional<Paciente> paciente = pacienteService.findByid(id);
 
         if (paciente == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().body(paciente);
+        return ResponseEntity.ok().body(paciente.get());
     }
 
     @PostMapping
-    public ResponseEntity<Paciente> inserir(@RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> inserir(@Valid @RequestBody Paciente paciente) {
         pacienteService.inserir(paciente);
         return ResponseEntity.created(null).body(paciente);
 
     }
 
-    @PutMapping("/{cpf}")
-    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente novosDadosPaciente, @PathVariable String cpf) {
-        Paciente paciente = pacienteService.selecionarPacientePeloCpf(cpf);
+    @PutMapping("/{id}")
+    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente novosDadosPaciente, @PathVariable String id) {
+        Optional<Paciente> paciente = pacienteService.findByid(id);
 
-        if (paciente == null) {
+        if (paciente.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        pacienteService.atualizar(cpf, novosDadosPaciente);
-        return ResponseEntity.ok().body(paciente);
+        Paciente responsePaciente = pacienteService.atualizar(id, novosDadosPaciente);
+        return ResponseEntity.ok().body(novosDadosPaciente);
     }
 
-    @PatchMapping("/{cpf}")
-    public ResponseEntity<Paciente> atualizarCpf(@RequestParam("cpf") String atualizarCpf, @PathVariable String cpf) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<Paciente> atualizarCpf(@RequestParam("cpf") String cpf, @PathVariable String id) {
 
-        Paciente paciente = pacienteService.selecionarPacientePeloCpf(cpf);
+        Optional<Paciente> paciente = pacienteService.findByid(id);
 
-        if (paciente == null) {
+        if (paciente.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        paciente.setCpf(atualizarCpf);
-        pacienteService.atualizar(cpf, paciente);
+        Paciente novosDadosdoPaciente = paciente.get();
+        novosDadosdoPaciente.setCpf(cpf);
 
-        return ResponseEntity.ok().body(paciente);
+        pacienteService.atualizar(id, novosDadosdoPaciente);
+
+        return ResponseEntity.ok().body(novosDadosdoPaciente);
 
 
     }
 
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<Paciente> deletar(@PathVariable String cpf) {
-       Paciente paciente = pacienteService.selecionarPacientePeloCpf(cpf);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Paciente> deletar(@PathVariable String id) {
+       Optional<Paciente> paciente = pacienteService.findByid(id);
 
 
-
-        if (paciente == null) {
+        if (paciente.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        pacienteService.remove(cpf);
+        pacienteService.remove(id);
 
         return ResponseEntity.ok().body(null);
     }

@@ -8,45 +8,47 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
+
     @Autowired
-    PacienteRepository alunoRepository;
-    private final List<Paciente> listaDePacientes = new ArrayList<>();
+    PacienteRepository pacienteRepository;
+
     public List<Paciente> obterTodos() {
 
-        return listaDePacientes;
+        return pacienteRepository.findAll();
     }
 
     public Paciente inserir(Paciente paciente) {
-        alunoRepository.insert(paciente);
+        pacienteRepository.insert(paciente);
 
         return paciente;
 
     }
-    public Paciente atualizar(String cpf,Paciente novosDadosDoPaciente) {
-        Paciente paciente = selecionarPacientePeloCpf(cpf);
-        if(paciente != null){
-            BeanUtils.copyProperties(novosDadosDoPaciente, paciente);
+    public Paciente atualizar(String id,Paciente novosDadosDoPaciente) {
+        Optional<Paciente> paciente = findByid(id);
+        if(paciente.isPresent()){
+            Paciente novoPaciente = paciente.get();
+            novoPaciente.setNome(novosDadosDoPaciente.getNome());
+            novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
+            novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
+            novoPaciente.setDataNascimento(novosDadosDoPaciente.getDataNascimento());
+            novoPaciente.setContato(novosDadosDoPaciente.getNome());
+            novoPaciente.setEndereco(novosDadosDoPaciente.getEndereco());
+            pacienteRepository.save(novoPaciente);
+            return novoPaciente;
     }
-        return paciente;
+        return null;
     }
 
-    public void remove (String cpf) {
-        Paciente paciente = selecionarPacientePeloCpf(cpf);
-        if(paciente != null){
-           listaDePacientes.remove(paciente);
-        }
-    }
-    public Paciente selecionarPacientePeloCpf(String cpf) {
-        Paciente pacienteSelecionado = null;
+    public void remove (String id) {
+        Optional<Paciente> paciente = findByid(id);
 
-        for (Paciente paciente : listaDePacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                pacienteSelecionado = paciente;
-            }
-        }
-        return pacienteSelecionado;
+        paciente.ifPresent(value -> pacienteRepository.delete(value));
+    }
+    public Optional<Paciente> findByid(String id) {
+        return pacienteRepository.findById(id);
     }
 }

@@ -6,9 +6,11 @@ import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
 import Felipe.API2.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,41 +28,49 @@ public class PacienteController {
 
 
     @GetMapping
+
     public List<Paciente> obterTodos(){
-        return pacienteService.obterTodos();
+        try {
+            return pacienteService.obterTodos();
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel listar todos os pacientes", ex);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> obterPacientePeloId(@Valid @PathVariable String id) {
-        Optional<Paciente> paciente = pacienteService.findByid(id);
+    public ResponseEntity<Optional<Paciente>>findByid(@Valid @PathVariable String id) {
 
-        if (paciente.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        try {
+            return ResponseEntity.ok().body(pacienteService.findByid(id));
+        } catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel achar esse paciente", ex);
         }
-        return ResponseEntity.ok().body(paciente.get());
     }
 
     @PostMapping
     public ResponseEntity<Paciente> inserir(@RequestBody PacienteDTO pacienteDTO) {
         Paciente paciente = new Paciente(pacienteDTO);
-        Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
-        paciente.setEndereco(endereco);
-        pacienteService.inserir(paciente);
+        try {
+            Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
+            paciente.setEndereco(endereco);
+            pacienteService.inserir(paciente);
 
-        return ResponseEntity.created(null).body(paciente);
-
+            return ResponseEntity.created(null).body(paciente);
+        }
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paciente não resgistrado", ex);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente novosDadosPaciente, @PathVariable String id) {
-        Optional<Paciente> paciente = pacienteService.findByid(id);
-
-        if (paciente.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente novoPaciente, @PathVariable String id) {
+        try {
+            return ResponseEntity.ok().body(pacienteService.atualizar(novoPaciente, id));
         }
-
-        Paciente responsePaciente = pacienteService.atualizar(id, novosDadosPaciente);
-        return ResponseEntity.ok().body(responsePaciente);
+        catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel atualizar o paciente.", ex);
+        }
     }
 
     @PatchMapping("/{id}")
@@ -82,13 +92,12 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Paciente> deletar(@PathVariable String id) {
-       Optional<Paciente> paciente = pacienteService.findByid(id);
-
-        if (paciente.isEmpty())  {
-            return ResponseEntity.notFound().build();
+        try{
+            pacienteService.remove(id);
+            return ResponseEntity.noContent().build();
         }
-        pacienteService.remove(id);
-
-        return ResponseEntity.ok().body(null);
+        catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possivel excluir o paciente.", ex);
+        }
     }
 }

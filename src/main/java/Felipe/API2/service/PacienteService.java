@@ -1,6 +1,8 @@
 package Felipe.API2.service;
 
+import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.Repository.PacienteRepository;
+import Felipe.API2.dto.PacienteDTO;
 import Felipe.API2.entity.Paciente;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class PacienteService {
 
     @Autowired
     PacienteRepository pacienteRepository;
+    @Autowired
+    CepHttpCliente cepHttpCliente;
 
     public List<Paciente> obterTodos() {
 
@@ -51,4 +55,16 @@ public class PacienteService {
 
         return pacienteRepository.findById(id);
     }
+    public Paciente atualizar(Paciente novoPaciente, String id) {
+        Optional<Paciente> optionalPaciente = findByid(id);
+
+        if (optionalPaciente.isPresent()) {
+            Paciente pacienteExistente = optionalPaciente.get();
+            BeanUtils.copyProperties(novoPaciente, pacienteExistente, "id");
+            return pacienteRepository.save(pacienteExistente);
+        } else {
+            return null;
+        }
+    }
+
 }

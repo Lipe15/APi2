@@ -48,6 +48,7 @@ public class PacienteService {
         paciente.ifPresent(value -> pacienteRepository.delete(value));
     }
     public Optional<Paciente> findByid(String id) {
+
         return pacienteRepository.findById(id);
     }
 }

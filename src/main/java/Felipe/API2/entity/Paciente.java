@@ -1,5 +1,6 @@
 package Felipe.API2.entity;
 
+import Felipe.API2.dto.PacienteDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection ="paciente")
+@Document(collection = "pacientes")
 public class Paciente {
     @Id
     private String id;
@@ -29,7 +30,14 @@ public class Paciente {
     @NotEmpty(message = "O Contato não foi informado")
     private String contato;
 
+    private Endereco endereco;
+    public Paciente(PacienteDTO pacienteDTO){
+        setNome(pacienteDTO.getNome());
+        setSobrenome(pacienteDTO.getSobrenome());
+        setCpf(pacienteDTO.getCpf());
+        setDataNascimento(pacienteDTO.getDataNascimento());
+        setContato(pacienteDTO.getContato());
 
+    }
 
-    public static String obterNome(){ return "eae";}
 }

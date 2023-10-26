@@ -4,5 +4,5 @@ import Felipe.API2.entity.Paciente;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface PacienteRepository extends MongoRepository <Paciente, String> {
-    public Paciente findByCpf(String cpf);
+
 }

@@ -36,7 +36,6 @@ public class PacienteService {
             novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
             novoPaciente.setDataNascimento(novosDadosDoPaciente.getDataNascimento());
             novoPaciente.setContato(novosDadosDoPaciente.getNome());
-            novoPaciente.setEndereco(novosDadosDoPaciente.getEndereco());
             pacienteRepository.save(novoPaciente);
             return novoPaciente;
     }

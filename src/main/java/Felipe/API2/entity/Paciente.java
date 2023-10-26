@@ -20,32 +20,16 @@ public class Paciente {
     private String id;
     @NotEmpty(message = "O nome não foi informado")
     private String nome;
+    @NotEmpty(message = "O sobrenome não foi informado")
     private String sobrenome;
-    @NotEmpty
+    @NotEmpty(message = "O cpf não foi informado")
     private String cpf;
+    @NotEmpty(message = "a Data de Nascimento não foi informada")
     private LocalDate dataNascimento;
+    @NotEmpty(message = "O Contato não foi informado")
     private String contato;
-    private String endereco;
-
-    public class Contato {
-        private String celular;
-        private String whatsapp;
-        private String email;
 
 
-    }
 
-    public class Endereco {
-        private String logradouro;
-        private String numero;
-        private String bairro;
-        private String municipio;
-        private String cep;
-        private String estado;
-
-
-    }
-    public static String obterNome(){
-        return "eai, blz ";
-    }
+    public static String obterNome(){ return "eae";}
 }

@@ -1,12 +1,10 @@
 package Felipe.API2.Controller;
 
 import Felipe.API2.entity.Paciente;
-
 import Felipe.API2.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +18,12 @@ public class PacienteController {
 
     @Autowired
     PacienteService pacienteService;
+
+
+
+
+
+
     @GetMapping
     public List<Paciente> obterTodos(){
         return pacienteService.obterTodos();
@@ -29,15 +33,16 @@ public class PacienteController {
     public ResponseEntity<Paciente> obterPacientePeloId(@Valid @PathVariable String id) {
         Optional<Paciente> paciente = pacienteService.findByid(id);
 
-        if (paciente == null) {
+        if (paciente.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(paciente.get());
     }
 
     @PostMapping
-    public ResponseEntity<Paciente> inserir(@Valid @RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> inserir(@RequestBody  Paciente paciente) {
         pacienteService.inserir(paciente);
+
         return ResponseEntity.created(null).body(paciente);
 
     }
@@ -51,7 +56,7 @@ public class PacienteController {
         }
 
         Paciente responsePaciente = pacienteService.atualizar(id, novosDadosPaciente);
-        return ResponseEntity.ok().body(novosDadosPaciente);
+        return ResponseEntity.ok().body(responsePaciente);
     }
 
     @PatchMapping("/{id}")
@@ -63,6 +68,7 @@ public class PacienteController {
             return ResponseEntity.notFound().build();
         }
         Paciente novosDadosdoPaciente = paciente.get();
+
         novosDadosdoPaciente.setCpf(cpf);
 
         pacienteService.atualizar(id, novosDadosdoPaciente);

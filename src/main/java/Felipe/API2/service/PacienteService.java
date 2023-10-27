@@ -20,6 +20,7 @@ public class PacienteService {
     @Autowired
     CepHttpCliente cepHttpCliente;
 
+
     public List<Paciente> obterTodos() {
 
         return pacienteRepository.findAll();
@@ -31,7 +32,7 @@ public class PacienteService {
         return paciente;
 
     }
-    public Paciente atualizar(String id,Paciente novosDadosDoPaciente) {
+   /* public Paciente atualizar(String id,Paciente novosDadosDoPaciente) {
         Optional<Paciente> paciente = findByid(id);
         if(paciente.isPresent()){
             Paciente novoPaciente = paciente.get();
@@ -44,7 +45,7 @@ public class PacienteService {
             return novoPaciente;
     }
         return null;
-    }
+    }*/
 
     public void remove (String id) {
         Optional<Paciente> paciente = findByid(id);
@@ -55,12 +56,19 @@ public class PacienteService {
 
         return pacienteRepository.findById(id);
     }
-    public Paciente atualizar(Paciente novoPaciente, String id) {
+    public Paciente atualizar(PacienteDTO pacienteDTO, String id) {
         Optional<Paciente> optionalPaciente = findByid(id);
 
         if (optionalPaciente.isPresent()) {
             Paciente pacienteExistente = optionalPaciente.get();
-            BeanUtils.copyProperties(novoPaciente, pacienteExistente, "id");
+
+            pacienteExistente.setNome(pacienteDTO.getNome());
+            pacienteExistente.setSobrenome(pacienteDTO.getSobrenome());
+            pacienteExistente.setCpf(pacienteDTO.getCpf());
+            pacienteExistente.setDataNascimento(pacienteDTO.getDataNascimento());
+            pacienteExistente.setSexo(pacienteDTO.getSexo());
+            pacienteExistente.setContato(pacienteDTO.getContato());
+
             return pacienteRepository.save(pacienteExistente);
         } else {
             return null;

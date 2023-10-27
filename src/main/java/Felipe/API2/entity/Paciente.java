@@ -28,6 +28,8 @@ public class Paciente {
     @NotEmpty(message = "a Data de Nascimento não foi informada")
     private LocalDate dataNascimento;
     @NotEmpty(message = "O Contato não foi informado")
+    private String sexo;
+
     private String contato;
 
     private Endereco endereco;
@@ -36,6 +38,7 @@ public class Paciente {
         setSobrenome(pacienteDTO.getSobrenome());
         setCpf(pacienteDTO.getCpf());
         setDataNascimento(pacienteDTO.getDataNascimento());
+        setSexo(pacienteDTO.getSexo());
         setContato(pacienteDTO.getContato());
 
     }

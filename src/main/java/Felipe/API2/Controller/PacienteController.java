@@ -51,6 +51,7 @@ public class PacienteController {
     @PostMapping
     public ResponseEntity<Paciente> inserir(@RequestBody PacienteDTO pacienteDTO) {
         Paciente paciente = new Paciente(pacienteDTO);
+
         try {
             Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
             paciente.setEndereco(endereco);
@@ -64,16 +65,16 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizar(@RequestBody Paciente novoPaciente, @PathVariable String id) {
+    public ResponseEntity<Paciente> atualizar(@RequestBody PacienteDTO pacienteDTO, @PathVariable String id) {
         try {
-            return ResponseEntity.ok().body(pacienteService.atualizar(novoPaciente, id));
+            return ResponseEntity.ok().body(pacienteService.atualizar(pacienteDTO, id));
         }
         catch(Exception ex){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel atualizar o paciente.", ex);
         }
     }
 
-    @PatchMapping("/{id}")
+   /* @PatchMapping("/{id}") ATUALIZAR DADO ESPECIFICO
     public ResponseEntity<Paciente> atualizarCpf(@RequestParam("cpf") String cpf, @PathVariable String id) {
 
         Optional<Paciente> paciente = pacienteService.findByid(id);
@@ -88,7 +89,7 @@ public class PacienteController {
         return ResponseEntity.ok().body(novosDadosdoPaciente);
 
 
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Paciente> deletar(@PathVariable String id) {

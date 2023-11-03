@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Endereco {
     private String cep;
-    private String state;
-    private String city;
-    private String street;
-    private String neighborhood;
+    private String uf;
+    private String localidade;
+    private String logradouro;
+    private String bairro;
 
 }

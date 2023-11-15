@@ -1,20 +1,20 @@
 # Projeto de Gerenciamento de Pacientes
 Bem-vindo ao Projeto de Gerenciamento de Pacientes.
-Este sistema é responsável por gerenciar informações de pacientes em um ambiente de saúde.
+Este sistema é responsável por gerenciar informações de pacientes.
 
 ## Indice
-- <a href="Visao Geral">Visão Geral</a>
-- <a href="Tecnologias">As tecnologias principais utilizadas</a>
-- <a href="Requisitos">Pré-Requisitos</a>
-- <a href="Ambiente">Configuração do Ambiente</a>
+- <a href="#Visao-Geral">Visão Geral</a>
+- <a href="#Tecnologias">As tecnologias principais utilizadas</a>
+- <a href="#Requisitos">Pré-Requisitos</a>
+- <a href="#Ambiente">Configuração do Ambiente</a>
 
 
 ## Visão Geral
 
 A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes, bem como o registro de vacinações associadas a esses pacientes.
 ## As tecnologias principais utilizadas são:
-- Spring Boot
-- MongoDB
+- [Spring Boot](https://spring.io/projects/spring-boot/)
+- [MongoDB](https://www.mongodb.com/pt-br)
 - Feign Client.
 
 ## Configuração:
@@ -53,3 +53,11 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 - Endpoint para atualizar paciente por ID:
 
       PUT http: //localhost:8080/api/Pacientes/{ID}
+
+## Pessoas Autoras
+- [Felipe Santos](https://github.com/Lipe15)
+- [Daylane Silva](https://github.com/daylane)
+- [Gilson](https://github.com/gilsongmptj)
+- [Matheus Moura](https://github.com/mtcurly)
+- [Felipe Olivera](https://github.com/fel1pee)
+- [Marcus Vinicius]()

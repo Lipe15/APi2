@@ -32,20 +32,6 @@ public class PacienteService {
         return paciente;
 
     }
-   /* public Paciente atualizar(String id,Paciente novosDadosDoPaciente) {
-        Optional<Paciente> paciente = findByid(id);
-        if(paciente.isPresent()){
-            Paciente novoPaciente = paciente.get();
-            novoPaciente.setNome(novosDadosDoPaciente.getNome());
-            novoPaciente.setSobrenome(novosDadosDoPaciente.getSobrenome());
-            novoPaciente.setCpf(novosDadosDoPaciente.getCpf());
-            novoPaciente.setDataNascimento(novosDadosDoPaciente.getDataNascimento());
-            novoPaciente.setContato(novosDadosDoPaciente.getNome());
-            pacienteRepository.save(novoPaciente);
-            return novoPaciente;
-    }
-        return null;
-    }*/
 
     public void remove (String id) {
         Optional<Paciente> paciente = findByid(id);

@@ -1,5 +1,6 @@
 package Felipe.API2.Controller;
 
+import Felipe.API2.Exception.PacienteNotFoundException;
 import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.dto.PacienteDTO;
 import Felipe.API2.entity.Endereco;
@@ -40,7 +41,6 @@ public class PacienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Paciente>>findByid(@Valid @PathVariable String id) {
-
         try {
             return ResponseEntity.ok().body(pacienteService.findByid(id));
         } catch (Exception ex){
@@ -50,18 +50,20 @@ public class PacienteController {
 
     @PostMapping
     public ResponseEntity<Paciente> inserir(@RequestBody PacienteDTO pacienteDTO) {
-        Paciente paciente = new Paciente(pacienteDTO);
+
 
         try {
+            Paciente paciente = new Paciente(pacienteDTO);
             Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
             paciente.setEndereco(endereco);
             pacienteService.inserir(paciente);
 
             return ResponseEntity.created(null).body(paciente);
         }
-        catch (Exception ex){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paciente não resgistrado", ex);
-        }
+        catch (Exception ex) {
+
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paciente não resgistrado", ex);
+            }
     }
 
     @PutMapping("/{id}")
@@ -70,26 +72,9 @@ public class PacienteController {
             return ResponseEntity.ok().body(pacienteService.atualizar(pacienteDTO, id));
         }
         catch(Exception ex){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel atualizar o paciente.", ex);
+            throw new PacienteNotFoundException("Paciente não encontrado com o ID: " + id);
         }
     }
-
-   /* @PatchMapping("/{id}") ATUALIZAR DADO ESPECIFICO
-    public ResponseEntity<Paciente> atualizarCpf(@RequestParam("cpf") String cpf, @PathVariable String id) {
-
-        Optional<Paciente> paciente = pacienteService.findByid(id);
-
-        if (paciente.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Paciente novosDadosdoPaciente = paciente.get();
-        novosDadosdoPaciente.setCpf(cpf);
-        pacienteService.atualizar(id, novosDadosdoPaciente);
-
-        return ResponseEntity.ok().body(novosDadosdoPaciente);
-
-
-    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Paciente> deletar(@PathVariable String id) {

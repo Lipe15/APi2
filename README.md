@@ -60,4 +60,4 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 - [Gilson](https://github.com/gilsongmptj)
 - [Matheus Moura](https://github.com/mtcurly)
 - [Felipe Olivera](https://github.com/fel1pee)
-- [Marcus Vinicius]()
+- [Marcus Vinicius](https://github.com/MarcusViniciusBtt)

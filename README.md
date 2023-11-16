@@ -11,7 +11,7 @@ Este sistema é responsável por gerenciar informações de pacientes.
 
 ## Visão Geral
 
-A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes, bem como o registro de vacinações associadas a esses pacientes.
+A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes.
 ## As tecnologias principais utilizadas são:
 - [Spring Boot](https://spring.io/projects/spring-boot/)
 - [MongoDB](https://www.mongodb.com/pt-br)

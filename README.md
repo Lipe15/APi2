@@ -4,9 +4,9 @@ Este sistema é responsável por gerenciar informações de pacientes.
 
 ## Indice
 - <a href="#Visao-Geral">Visão Geral</a>
-- <a href="#Tecnologias">As tecnologias principais utilizadas</a>
-- <a href="#Requisitos">Pré-Requisitos</a>
-- <a href="#Ambiente">Configuração do Ambiente</a>
+- <a href="#as-tecnologias-principais-utilizadas-são">As tecnologias principais utilizadas</a>
+- <a href="#pré-requisitos">Pré-Requisitos</a>
+- <a href="#configuração-do-ambiente">Configuração do Ambiente</a>
 
 
 ## Visão Geral
@@ -34,25 +34,70 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
       •	Ajuste as configurações do MongoDB conforme necessário.
 # Uso
 ##### A API oferece endpoints para manipulação de pacientes e vacinações. Consulte a documentação da API para obter detalhes sobre os endpoints, parâmetros e respostas.
-      
-- Exemplo de uso:
-
 
 - Endpoint para obter todos os pacientes:
-
+        
       GET http://localhost:8080/api/Pacientes
+  
+- Get Exemplo de resposta:
+        
+        {
+          "id": "653d254a70793512735a8edf",
+          "nome": "Felipe",
+          "sobrenome": "Santos",
+          "cpf": "40028922",
+          "dataNascimento": "2002-09-15",
+          "sexo": "Feminino",
+          "contato": "(71) 992706607",
+          "endereco": {
+                  "cep": "42807-027",
+                  "uf": "BA",
+                  "localidade": "Camaçari",
+                  "logradouro": "Rua Abaré",
+                  "bairro": "Gleba C"
+          }
+      
 
 - Endpoint para registrar uma vacinação:
   
       POST http://localhost:8080/api/Pacientes
 
+- Post Exemplo de Resposta:
+
+      {
+      "nome":"Felipe",
+      "sobrenome":"Santos",
+      "sexo": 5555,
+      "cpf":"40028922",
+      "dataNascimento":"2002-09-15",
+      "contato":"(71) 992706607",
+      "cep": "42807027"    
+      }
+
 - Endpoint para deletar um paciente por ID:
 
       Delete http: //localhost:8080/api/Pacientes/{ID}
 
+- Delete Exemplo de resposta:
+
+      Status: 204 No Content
+
+
 - Endpoint para atualizar paciente por ID:
 
       PUT http: //localhost:8080/api/Pacientes/{ID}
+         
+- PUT exemplo de resposta:
+
+            {
+            "nome": "Novo Nome",
+            "sobrenome": "Novo Sobrenome",
+            "cpf": "Novo CPF",
+            "dataNascimento": "yyyy-mm-dd",
+            "sexo": "Novo Sexo",
+            "contato": "Novo Contato",
+            "cep":"Novo CEP"
+             }
 
 ## Pessoas Autoras
 - [Felipe Santos](https://github.com/Lipe15)

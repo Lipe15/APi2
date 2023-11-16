@@ -2,8 +2,10 @@ package Felipe.API2.controller;
 
 
 import Felipe.API2.Exception.PacienteNotFoundException;
+import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.Repository.PacienteRepository;
 import Felipe.API2.dto.PacienteDTO;
+import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
 import Felipe.API2.service.PacienteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,12 +24,17 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+
+
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -41,6 +48,13 @@ public class PacienteControllerTest {
     PacienteService pacienteService;
     @MockBean
     PacienteRepository pacienteRepository;
+    @MockBean
+    CepHttpCliente cepHttpCliente;
+    @MockBean
+    Endereco endereco;
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Test
     @DisplayName("Deve ser possivel obter todos os pacientes cadastrados")
@@ -117,6 +131,23 @@ public class PacienteControllerTest {
         // Verify
         verify(pacienteService,times(1)).findByid(paciente1.getId());
     }
+    @Test
+    @DisplayName("Deve inserir um novo paciente")
+    public void testInserirPaciente() throws Exception {
+        // Arrange
+        PacienteDTO pacienteDTO = new PacienteDTO();
+        pacienteDTO.setNome("Felipe");
+        pacienteDTO.setSobrenome("Santos");
+        // Act e Assert
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/Pacientes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pacienteDTO)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value(pacienteDTO.getNome()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sobrenome").value(pacienteDTO.getSobrenome()));
+    }
+
 
     @Test
     @DisplayName("Deve lançar uma Exceção ao buscar um ID inexistente")
@@ -154,7 +185,6 @@ public class PacienteControllerTest {
         // Verify
         verify(pacienteService, times(1)).remove(paciente1.getId());
     }
-    //ajeitar meu código principal
     @Test
     @DisplayName("Não deve Remover caso não ache o ID")
     public void testNotRemove() throws Exception {

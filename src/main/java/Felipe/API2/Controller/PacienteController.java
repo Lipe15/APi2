@@ -55,22 +55,20 @@ public class PacienteController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel achar esse paciente", ex);
         }
     }
-    @GetMapping("/por-uf/{uf}")
-    public ResponseEntity<List<Estado>> obterPacientesPorUf(@PathVariable String uf) {
+    @GetMapping("/por-uf/")
+    public ResponseEntity<List<Estado>> obterPacientesPorUf(@RequestParam(required = false)String uf) {
         try {
             logger.info("Buscando Pacientes por UF: {}", uf);
             List<Estado> pacientesDTO = pacienteService.obterPacientesPorUf(uf);
             return ResponseEntity.ok(pacientesDTO);
         } catch (Exception ex) {
             logger.error("Erro ao obter pacientes por UF", ex);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao boter pacientes por UF", ex);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Paciente> inserir(@RequestBody PacienteDTO pacienteDTO) {
-
-
+    public ResponseEntity<Paciente> inserir(@RequestBody @Valid PacienteDTO pacienteDTO) {
         try {
             logger.info("Recebendo solicitação para inserir um novo paciente.");
             Paciente paciente = new Paciente(pacienteDTO);

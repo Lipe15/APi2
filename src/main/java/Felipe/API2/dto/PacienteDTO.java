@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +16,7 @@ public class PacienteDTO {
 
         @Id
         private String id;
+        @NotBlank(message = "O nome do paciente não pode estar em branco")
         private String nome;
         private String sobrenome;
         private String cpf;

@@ -64,7 +64,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
   
       POST http: localhost:8080/api/Pacientes
 
-- Post Exemplo de Resposta:
+- Post Exemplo:
 
       {
       "nome":"Felipe",

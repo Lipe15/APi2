@@ -2,6 +2,7 @@ package Felipe.API2.Controller;
 
 import Felipe.API2.Exception.PacienteNotFoundException;
 import Felipe.API2.HttpCliente.CepHttpCliente;
+import Felipe.API2.dto.Estado;
 import Felipe.API2.dto.PacienteDTO;
 import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
@@ -35,7 +36,7 @@ public class PacienteController {
 
     public List<Paciente> obterTodos(){
         try {
-            logger.info("Recebida uma solicitação para inserir um novo paciente");
+            logger.info("Recebida uma solicitação para buscar pacientes");
             return pacienteService.obterTodos();
         }
         catch (Exception ex){
@@ -52,6 +53,17 @@ public class PacienteController {
         } catch (Exception ex){
             logger.error("Erro ao buscar paciente pelo ID: {}", id, ex);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel achar esse paciente", ex);
+        }
+    }
+    @GetMapping("/por-uf/{uf}")
+    public ResponseEntity<List<Estado>> obterPacientesPorUf(@PathVariable String uf) {
+        try {
+            logger.info("Buscando Pacientes por UF: {}", uf);
+            List<Estado> pacientesDTO = pacienteService.obterPacientesPorUf(uf);
+            return ResponseEntity.ok(pacientesDTO);
+        } catch (Exception ex) {
+            logger.error("Erro ao obter pacientes por UF", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

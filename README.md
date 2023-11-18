@@ -7,15 +7,17 @@ Este sistema é responsável por gerenciar informações de pacientes.
 - <a href="#as-tecnologias-principais-utilizadas-são">As tecnologias principais utilizadas</a>
 - <a href="#pré-requisitos">Pré-Requisitos</a>
 - <a href="#configuração-do-ambiente">Configuração do Ambiente</a>
+- <a href="#USO">Uso</a>
 
 
 ## Visão Geral
 
-A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes, bem como o registro de vacinações associadas a esses pacientes.
+A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes.
 ## As tecnologias principais utilizadas são:
 - [Spring Boot](https://spring.io/projects/spring-boot/)
 - [MongoDB](https://www.mongodb.com/pt-br)
 - Feign Client.
+- [Postman](https://www.postman.com/)
 
 ## Configuração:
 Siga estas instruções para configurar o ambiente de desenvolvimento e executar a aplicação.
@@ -30,8 +32,8 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
       cd API2
 
 3.	Configure as propriedades do aplicativo:
-      •	Abra o arquivo application.properties no diretório src/main/resources.
-      •	Ajuste as configurações do MongoDB conforme necessário.
+      -	Abra o arquivo application.properties no diretório src/main/resources.
+      - Ajuste as configurações do MongoDB conforme necessário.
 # Uso
 ##### A API oferece endpoints para manipulação de pacientes e vacinações. Consulte a documentação da API para obter detalhes sobre os endpoints, parâmetros e respostas.
 
@@ -60,7 +62,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para registrar uma vacinação:
   
-      POST http://localhost:8080/api/Pacientes
+      POST http: localhost:8080/api/Pacientes
 
 - Post Exemplo de Resposta:
 
@@ -76,7 +78,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para deletar um paciente por ID:
 
-      Delete http: //localhost:8080/api/Pacientes/{ID}
+      Delete http: localhost:8080/api/Pacientes/{ID}
 
 - Delete Exemplo de resposta:
 
@@ -85,7 +87,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para atualizar paciente por ID:
 
-      PUT http: //localhost:8080/api/Pacientes/{ID}
+      PUT http: localhost:8080/api/Pacientes/{ID}
          
 - PUT exemplo de resposta:
 
@@ -98,6 +100,19 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
             "contato": "Novo Contato",
             "cep":"Novo CEP"
              }
+- Endpoint para Obter paciente por uf:
+
+      GET http: localhost:8080/api/Pacientes/por-uf/{uf}
+- Get exemplo de resposta:
+
+       {
+       "nome": "Felipe Santos",
+       "uf": "BA",
+       "bairro": "Gleba C",
+       "localidade": "Camaçari",
+       "cpf": "40028922",
+       "idade": 21
+       }
 
 ## Pessoas Autoras
 - [Felipe Santos](https://github.com/Lipe15)

@@ -13,7 +13,7 @@ Este sistema é responsável por gerenciar informações de pacientes.
 ## Visão Geral
 
 A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção e consulta de informações de pacientes.
-## As tecnologias principais utilizadas são:
+### As tecnologias principais utilizadas são:
 - [Spring Boot](https://spring.io/projects/spring-boot/)
 - [MongoDB](https://www.mongodb.com/pt-br)
 - Feign Client.
@@ -39,6 +39,13 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 3.	Configure as propriedades do aplicativo:
       -	Abra o arquivo application.properties no diretório src/main/resources.
       - Ajuste as configurações do MongoDB conforme necessário.
+
+### Banco de dados
+
+- a.  Iniciar uma nova conexão com a URL: mongodb://localhost:27017.
+- b.  Criar uma nova database com o nome de "sus-api".
+- c.  Dar o nome da primeira "collection" de "vacina".
+  
 # Uso
 ##### A API oferece endpoints para manipulação de pacientes e vacinações. Consulte a documentação da API para obter detalhes sobre os endpoints, parâmetros e respostas.
 
@@ -69,7 +76,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
   
       POST http: localhost:8081/api/Pacientes
 
-- Post Exemplo de Resposta:
+- Post Exemplo:
 
       {
       "nome":"Felipe",
@@ -118,6 +125,12 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
        "cpf": "40028922",
        "idade": 21
        }
+##  Endpoints
+
+- [/api/vacinas](https://github.com/daylane/Vacina): Gerenciamento de informações sobre vacinas.
+- [/api/pacientes](#vacinacoes): Gerenciamento de informações sobre pacientes.
+- [/api/vacinacoes](https://github.com/daylane/registroVacinacao/): Registro de vacinações de pacientes.
+
 
 ## Pessoas Autoras
 - [Felipe Santos](https://github.com/Lipe15)

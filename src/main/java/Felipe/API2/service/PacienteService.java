@@ -1,6 +1,6 @@
 package Felipe.API2.service;
 
-
+import org.springframework.beans.BeanUtils;
 import Felipe.API2.Exception.CpfDuplicadoException;
 import Felipe.API2.Exception.PacienteNotFoundException;
 import Felipe.API2.Exception.PacienteNotInformedException;
@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +55,7 @@ public class PacienteService {
     }
 
 
-    public void remove (String id) {
+    public void remove(String id) {
         Optional<Paciente> paciente = findByid(id);
 
         if (paciente.isPresent()) {
@@ -62,6 +64,7 @@ public class PacienteService {
             throw new PacienteNotFoundException("Paciente não encontrado com o ID: " + id);
         }
     }
+
     public Optional<Paciente> findByid(String id) {
         Optional<Paciente> pacienteOptional = pacienteRepository.findById(id);
 
@@ -104,6 +107,7 @@ public class PacienteService {
         } catch (Exception ex) {
             throw new UfNotFoundException("Não foram encontrados pacientes para a UF especificada: " + uf);
         }
+
     }
 
     public Paciente atualizar(PacienteDTO pacienteDTO, String id) {
@@ -123,6 +127,8 @@ public class PacienteService {
         } else {
             return null;
         }
+
+
     }
 
 }

@@ -19,6 +19,11 @@ A api de Gerenciamento de Pacientes permite o cadastro, atualização, remoção
 - Feign Client.
 - [Postman](https://www.postman.com/)
 
+### A API é projetada para fornecer as seguintes funcionalidades:
+
+- Registro de vacinações de pacientes.
+- Gerenciamento de informações sobre vacinas e pacientes.
+- Estatísticas sobre vacinação, como doses aplicadas, doses atrasadas e vacinas por fabricante.
 ## Configuração:
 Siga estas instruções para configurar o ambiente de desenvolvimento e executar a aplicação.
 ## Pré-requisitos
@@ -39,7 +44,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para obter todos os pacientes:
         
-      GET http://localhost:8080/api/Pacientes
+      GET http://localhost:8081/api/Pacientes
   
 - Get Exemplo de resposta:
         
@@ -62,7 +67,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para registrar uma vacinação:
   
-      POST http: localhost:8080/api/Pacientes
+      POST http: localhost:8081/api/Pacientes
 
 - Post Exemplo de Resposta:
 
@@ -78,7 +83,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para deletar um paciente por ID:
 
-      Delete http: localhost:8080/api/Pacientes/{ID}
+      Delete http: localhost:8081/api/Pacientes/{ID}
 
 - Delete Exemplo de resposta:
 
@@ -87,7 +92,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para atualizar paciente por ID:
 
-      PUT http: localhost:8080/api/Pacientes/{ID}
+      PUT http: localhost:8081/api/Pacientes/{ID}
          
 - PUT exemplo de resposta:
 
@@ -102,7 +107,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
              }
 - Endpoint para Obter paciente por uf:
 
-      GET http: localhost:8080/api/Pacientes/por-uf/{uf}
+      GET http: localhost:8081/api/Pacientes/por-uf/{uf}
 - Get exemplo de resposta:
 
        {

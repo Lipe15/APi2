@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
@@ -19,11 +16,16 @@ import java.time.LocalDate;
 public class Paciente {
     @Id
     private String id;
+    @NotBlank(message = "Nome não pode estar em branco.")
+    @NotNull(message = "Nome não pode estar em nulo.")
     @NotEmpty(message = "O nome não foi informado")
     private String nome;
     @NotEmpty(message = "O sobrenome não foi informado")
+    @NotBlank(message = "Sobrenome não pode estar em branco.")
+    @NotNull(message = "Sobrenome não pode estar em nulo.")
     private String sobrenome;
     @NotEmpty(message = "O cpf não foi informado")
+    @Size(min = 3, max = 11, message = "O CPF deve ter 11 digitos!")
     private String cpf;
     @NotEmpty(message = "a Data de Nascimento não foi informada")
     private LocalDate dataNascimento;
@@ -42,5 +44,6 @@ public class Paciente {
         setContato(pacienteDTO.getContato());
 
     }
+
 
 }

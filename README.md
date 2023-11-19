@@ -120,6 +120,12 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
        "cpf": "40028922",
        "idade": 21
        }
+##  Endpoints
+
+- [/api/vacinas](https://github.com/daylane/Vacina): Gerenciamento de informações sobre vacinas.
+- [/api/pacientes](#vacinacoes): Gerenciamento de informações sobre pacientes.
+- [/api/vacinacoes](https://github.com/daylane/registroVacinacao/): Registro de vacinações de pacientes.
+
 
 ## Pessoas Autoras
 - [Felipe Santos](https://github.com/Lipe15)

@@ -34,12 +34,19 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 3.	Configure as propriedades do aplicativo:
       -	Abra o arquivo application.properties no diretório src/main/resources.
       - Ajuste as configurações do MongoDB conforme necessário.
+
+### Banco de dados
+
+- a.  Iniciar uma nova conexão com a URL: mongodb://localhost:27017.
+- b.  Criar uma nova database com o nome de "sus-api".
+- c.  Dar o nome da primeira "collection" de "vacina".
+  
 # Uso
 ##### A API oferece endpoints para manipulação de pacientes e vacinações. Consulte a documentação da API para obter detalhes sobre os endpoints, parâmetros e respostas.
 
 - Endpoint para obter todos os pacientes:
         
-      GET http://localhost:8080/api/Pacientes
+      GET http://localhost:8081/api/Pacientes
   
 - Get Exemplo de resposta:
         
@@ -62,7 +69,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para registrar uma vacinação:
   
-      POST http: localhost:8080/api/Pacientes
+      POST http: localhost:8081/api/Pacientes
 
 - Post Exemplo:
 
@@ -78,7 +85,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para deletar um paciente por ID:
 
-      Delete http: localhost:8080/api/Pacientes/{ID}
+      Delete http: localhost:8081/api/Pacientes/{ID}
 
 - Delete Exemplo de resposta:
 
@@ -87,7 +94,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
 
 - Endpoint para atualizar paciente por ID:
 
-      PUT http: localhost:8080/api/Pacientes/{ID}
+      PUT http: localhost:8081/api/Pacientes/{ID}
          
 - PUT exemplo de resposta:
 
@@ -102,7 +109,7 @@ Siga estas instruções para configurar o ambiente de desenvolvimento e executar
              }
 - Endpoint para Obter paciente por uf:
 
-      GET http: localhost:8080/api/Pacientes/por-uf/{uf}
+      GET http: localhost:8081/api/Pacientes/por-uf/{uf}
 - Get exemplo de resposta:
 
        {

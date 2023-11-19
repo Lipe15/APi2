@@ -55,7 +55,7 @@ public class PacienteController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possivel achar esse paciente", ex);
         }
     }
-    @GetMapping("/por-uf/")
+    @GetMapping("/por-uf")
     public ResponseEntity<List<Estado>> obterPacientesPorUf(@RequestParam(required = false)String uf) {
         try {
             logger.info("Buscando Pacientes por UF: {}", uf);

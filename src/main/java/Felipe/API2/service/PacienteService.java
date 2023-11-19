@@ -79,28 +79,47 @@ public class PacienteService {
             if (StringUtils.isEmpty(uf)) {
 
                 pacientes = pacienteRepository.findAll();
+                if (!pacientes.isEmpty()) {
+
+                    return pacientes.stream()
+                            .map(paciente -> {
+                                Estado estado = new Estado();
+                                estado.setNome(paciente.getNome() + " " + paciente.getSobrenome());
+                                estado.setBairro(paciente.getEndereco().getBairro());
+                                estado.setLocalidade(paciente.getEndereco().getLocalidade());
+                                estado.setUf(paciente.getEndereco().getUf());
+                                estado.calcularIdade(paciente.getDataNascimento());
+                                estado.setCpf(paciente.getCpf());
+                                return estado;
+                            })
+                            .collect(Collectors.toList());
+                } else {
+                    return Collections.emptyList();
+                }
             } else {
 
                 pacientes = pacienteRepository.findByEndereco_Uf(uf);
+
+                if (!pacientes.isEmpty()) {
+
+                    return pacientes.stream()
+                            .map(paciente -> {
+                                Estado estado = new Estado();
+                                estado.setNome(paciente.getNome() + " " + paciente.getSobrenome());
+                                estado.setBairro(paciente.getEndereco().getBairro());
+                                estado.setLocalidade(paciente.getEndereco().getLocalidade());
+                                estado.setUf(paciente.getEndereco().getUf());
+                                estado.calcularIdade(paciente.getDataNascimento());
+                                estado.setCpf(paciente.getCpf());
+                                return estado;
+                            })
+                            .collect(Collectors.toList());
+                } else {
+                    return Collections.emptyList();
+                }
             }
 
-            if (!pacientes.isEmpty()) {
 
-                return pacientes.stream()
-                        .map(paciente -> {
-                            Estado estado = new Estado();
-                            estado.setNome(paciente.getNome() + " " + paciente.getSobrenome());
-                            estado.setBairro(paciente.getEndereco().getBairro());
-                            estado.setLocalidade(paciente.getEndereco().getLocalidade());
-                            estado.setUf(paciente.getEndereco().getUf());
-                            estado.calcularIdade(paciente.getDataNascimento());
-                            estado.setCpf(paciente.getCpf());
-                            return estado;
-                        })
-                        .collect(Collectors.toList());
-            } else {
-                return Collections.emptyList();
-            }
         } catch (Exception ex) {
             throw new UfNotFoundException("Não foram encontrados pacientes para a UF especificada: " + uf);
         }

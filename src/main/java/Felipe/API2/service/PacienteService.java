@@ -1,10 +1,6 @@
 package Felipe.API2.service;
 
-import org.springframework.beans.BeanUtils;
-import Felipe.API2.Exception.CpfDuplicadoException;
-import Felipe.API2.Exception.PacienteNotFoundException;
-import Felipe.API2.Exception.PacienteNotInformedException;
-import Felipe.API2.Exception.UfNotFoundException;
+import Felipe.API2.Exception.*;
 import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.Repository.PacienteRepository;
 import Felipe.API2.dto.Estado;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,11 +35,15 @@ public class PacienteService {
     }
 
     public Paciente inserir(Paciente paciente) {
-        if (StringUtils.isEmpty(paciente.getNome())) {
-            throw new PacienteNotInformedException("O nome do paciente deve ser informado.");
-        }
         if (pacienteRepository.existsByCpf(paciente.getCpf())) {
             throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + paciente.getCpf());
+        }
+        LocalDate dataNascimento = paciente.getDataNascimento();
+        if (dataNascimento != null && dataNascimento.isAfter(LocalDate.now())) {
+            throw new DataNascimentoFuturaException("A data de nascimento não pode ser no futuro.");
+        }
+        if (!"masculino".equals(paciente.getSexo()) && !"feminino".equals(paciente.getSexo())) {
+            throw new SexoInvalidoException("O sexo do paciente deve ser 'masculino' ou 'feminino ");
         }
         try {
             pacienteRepository.insert(paciente);
@@ -135,6 +134,22 @@ public class PacienteService {
         if (optionalPaciente.isPresent()) {
             Paciente pacienteExistente = optionalPaciente.get();
 
+            if (!pacienteDTO.getCpf().equals(pacienteExistente.getCpf())) {
+
+                if (pacienteRepository.existsByCpf(pacienteDTO.getCpf())) {
+                    throw new CpfDuplicadoException("Não é possível atualizar o CPF para um já existente.");
+                }
+            }
+            if (pacienteRepository.existsByCpf(pacienteDTO.getCpf())) {
+                throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + pacienteDTO.getCpf());
+            }
+            LocalDate dataNascimento = pacienteDTO.getDataNascimento();
+            if (dataNascimento != null && dataNascimento.isAfter(LocalDate.now())) {
+                throw new DataNascimentoFuturaException("A data de nascimento não pode ser no futuro.");
+            }
+            if (!"masculino".equalsIgnoreCase(pacienteDTO.getSexo()) && !"feminino".equalsIgnoreCase(pacienteDTO.getSexo())) {
+                throw new SexoInvalidoException("O sexo do paciente deve ser 'masculino' ou 'feminino' " );
+            }
             pacienteExistente.setNome(pacienteDTO.getNome());
             pacienteExistente.setSobrenome(pacienteDTO.getSobrenome());
             pacienteExistente.setCpf(pacienteDTO.getCpf());
@@ -147,7 +162,5 @@ public class PacienteService {
             return null;
         }
 
-
     }
-
 }

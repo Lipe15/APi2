@@ -1,5 +1,7 @@
 package Felipe.API2.Controller;
 
+import Felipe.API2.Exception.ExternalServiceException;
+import Felipe.API2.Exception.InvalidCepException;
 import Felipe.API2.Exception.PacienteNotFoundException;
 import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.dto.Estado;
@@ -7,6 +9,7 @@ import Felipe.API2.dto.PacienteDTO;
 import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
 import Felipe.API2.service.PacienteService;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
@@ -76,19 +78,21 @@ public class PacienteController {
             Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
             paciente.setEndereco(endereco);
             pacienteService.inserir(paciente);
-
             logger.info("Novo paciente inserido com sucesso.");
 
             return ResponseEntity.created(null).body(paciente);
+        } catch (FeignException.BadRequest e) {
+            throw new ExternalServiceException("Cep Invalido");
         }
         catch (Exception ex) {
             logger.error("Erro ao processar a solicitação de inserção de paciente.", ex);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paciente não resgistrado", ex);
-            }
+        }
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizar(@RequestBody PacienteDTO pacienteDTO, @PathVariable String id) {
+    public ResponseEntity<Paciente> atualizar(@RequestBody @Valid PacienteDTO pacienteDTO, @PathVariable String id) {
         try {
             logger.info("Recebendo solicitação para atualizar paciente com ID: {}", id);
 

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PacienteRepository extends MongoRepository <Paciente, String> {
 
     Paciente save(Paciente paciente);
-    List<Paciente> findByEndereco_Uf(String uf);
+    List<Paciente> findByUf(String uf);
     Paciente findByCpf(String cpf);
 
     boolean existsByCpf(String cpf);

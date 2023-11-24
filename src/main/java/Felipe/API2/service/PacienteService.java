@@ -1,10 +1,9 @@
 package Felipe.API2.service;
 
 import Felipe.API2.Exception.*;
-import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.Repository.PacienteRepository;
 import Felipe.API2.dto.Estado;
-import Felipe.API2.dto.PacienteDTO;
+
 import Felipe.API2.entity.Paciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,7 @@ public class PacienteService {
 
     @Autowired
     PacienteRepository pacienteRepository;
-    @Autowired
-    CepHttpCliente cepHttpCliente;
+
 
 
 
@@ -92,7 +90,6 @@ public class PacienteService {
             List<Paciente> pacientes;
 
             if (StringUtils.isEmpty(uf)) {
-
                 pacientes = pacienteRepository.findAll();
                 if (!pacientes.isEmpty()) {
 
@@ -100,9 +97,9 @@ public class PacienteService {
                             .map(paciente -> {
                                 Estado estado = new Estado();
                                 estado.setNome(paciente.getNome() + " " + paciente.getSobrenome());
-                                estado.setBairro(paciente.getEndereco().getBairro());
-                                estado.setLocalidade(paciente.getEndereco().getLocalidade());
-                                estado.setUf(paciente.getEndereco().getUf());
+                                estado.setBairro(paciente.getBairro());
+                                estado.setLocalidade(paciente.getLocalidade());
+                                estado.setUf(paciente.getUf());
                                 estado.calcularIdade(paciente.getDataNascimento());
                                 estado.setCpf(paciente.getCpf());
                                 return estado;
@@ -113,7 +110,7 @@ public class PacienteService {
                 }
             } else {
 
-                pacientes = pacienteRepository.findByEndereco_Uf(uf);
+                pacientes = pacienteRepository.findByUf(uf);
 
                 if (!pacientes.isEmpty()) {
 
@@ -121,9 +118,9 @@ public class PacienteService {
                             .map(paciente -> {
                                 Estado estado = new Estado();
                                 estado.setNome(paciente.getNome() + " " + paciente.getSobrenome());
-                                estado.setBairro(paciente.getEndereco().getBairro());
-                                estado.setLocalidade(paciente.getEndereco().getLocalidade());
-                                estado.setUf(paciente.getEndereco().getUf());
+                                estado.setBairro(paciente.getBairro());
+                                estado.setLocalidade(paciente.getLocalidade());
+                                estado.setUf(paciente.getUf());
                                 estado.calcularIdade(paciente.getDataNascimento());
                                 estado.setCpf(paciente.getCpf());
                                 return estado;
@@ -142,34 +139,36 @@ public class PacienteService {
 
     }
 
-    public Paciente atualizar(PacienteDTO pacienteDTO, String id) {
+    public Paciente atualizar(Paciente paciente, String id) {
         Optional<Paciente> optionalPaciente = findByid(id);
 
         if (optionalPaciente.isPresent()) {
             Paciente pacienteExistente = optionalPaciente.get();
 
-            if (!pacienteDTO.getCpf().equals(pacienteExistente.getCpf())) {
+            if (!paciente.getCpf().equals(pacienteExistente.getCpf())) {
 
-                if (pacienteRepository.existsByCpf(pacienteDTO.getCpf())) {
+                if (pacienteRepository.existsByCpf(paciente.getCpf())) {
                     throw new CpfDuplicadoException("Não é possível atualizar o CPF para um já existente.");
                 }
             }
-            if (pacienteRepository.existsByCpf(pacienteDTO.getCpf())) {
-                throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + pacienteDTO.getCpf());
+            if (pacienteRepository.existsByCpf(paciente.getCpf())) {
+                throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + paciente.getCpf());
             }
-            LocalDate dataNascimento = pacienteDTO.getDataNascimento();
+            LocalDate dataNascimento = paciente.getDataNascimento();
             if (dataNascimento != null && dataNascimento.isAfter(LocalDate.now())) {
                 throw new DataNascimentoFuturaException("A data de nascimento não pode ser no futuro.");
             }
-            if (!"masculino".equalsIgnoreCase(pacienteDTO.getSexo()) && !"feminino".equalsIgnoreCase(pacienteDTO.getSexo())) {
+            if (!"masculino".equalsIgnoreCase(paciente.getSexo()) && !"feminino".equalsIgnoreCase(paciente.getSexo())) {
                 throw new SexoInvalidoException("O sexo do paciente deve ser 'masculino' ou 'feminino' " );
             }
-            pacienteExistente.setNome(pacienteDTO.getNome());
-            pacienteExistente.setSobrenome(pacienteDTO.getSobrenome());
-            pacienteExistente.setCpf(pacienteDTO.getCpf());
-            pacienteExistente.setDataNascimento(pacienteDTO.getDataNascimento());
-            pacienteExistente.setSexo(pacienteDTO.getSexo());
-            pacienteExistente.getEndereco().setCep(pacienteDTO.getCep());
+            pacienteExistente.setNome(paciente.getNome());
+            pacienteExistente.setSobrenome(paciente.getSobrenome());
+            pacienteExistente.setCpf(paciente.getCpf());
+            pacienteExistente.setDataNascimento(paciente.getDataNascimento());
+            pacienteExistente.setSexo(paciente.getSexo());
+            pacienteExistente.setLocalidade(paciente.getLocalidade());
+            pacienteExistente.setBairro(paciente.getBairro());
+            pacienteExistente.setUf(paciente.getUf());
 
 
             return pacienteRepository.save(pacienteExistente);

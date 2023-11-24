@@ -1,15 +1,11 @@
 package Felipe.API2.Controller;
 
-import Felipe.API2.Exception.CepNaoEncontradoException;
-import Felipe.API2.Exception.ExternalServiceException;
+
 import Felipe.API2.Exception.PacienteNotFoundException;
-import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.dto.Estado;
-import Felipe.API2.dto.PacienteDTO;
-import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
 import Felipe.API2.service.PacienteService;
-import feign.FeignException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +27,7 @@ public class PacienteController {
     private static Logger logger = LoggerFactory.getLogger(PacienteController.class);
     @Autowired
     PacienteService pacienteService;
-    @Autowired
-    CepHttpCliente cepHttpCliente;
+
 
 
     @GetMapping
@@ -71,39 +66,18 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Paciente> inserir(@RequestBody @Valid PacienteDTO pacienteDTO) {
-        try {
-            logger.info("Recebendo solicitação para inserir um novo paciente.");
-
-            Paciente paciente = new Paciente(pacienteDTO);
-            Endereco endereco = cepHttpCliente.obterEnderecoPeloCep(pacienteDTO.getCep());
-
-            if (endereco.getUf() == null) {
-                throw new CepNaoEncontradoException("CEP não encontrado. Por favor, insira um CEP válido.");
-            }
-
-            paciente.setEndereco(endereco);
-            pacienteService.inserir(paciente);
-            logger.info("Novo paciente inserido com sucesso.");
+    public ResponseEntity<Paciente> inserir(@RequestBody @Valid Paciente paciente) {
+        pacienteService.inserir(paciente);
 
             return ResponseEntity.created(null).body(paciente);
-        } catch (CepNaoEncontradoException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        } catch (FeignException.BadRequest e) {
-            throw new ExternalServiceException("Cep Invalido");
-        } catch (Exception ex) {
-            logger.error("Erro ao processar a solicitação de inserção de paciente.", ex);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Paciente não registrado", ex);
-        }
-
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizar(@RequestBody @Valid PacienteDTO pacienteDTO, @PathVariable String id) {
+    public ResponseEntity<Paciente> atualizar(@RequestBody @Valid Paciente paciente, @PathVariable String id) {
         try {
             logger.info("Recebendo solicitação para atualizar paciente com ID: {}", id);
 
-            return ResponseEntity.ok().body(pacienteService.atualizar(pacienteDTO, id));
+            return ResponseEntity.ok().body(pacienteService.atualizar(paciente, id));
         }
         catch (PacienteNotFoundException ex) {
             logger.error("Erro ao processar a solicitação de atualização do paciente.", ex);

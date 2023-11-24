@@ -1,12 +1,7 @@
 package Felipe.API2.controller;
 
 
-import Felipe.API2.Exception.PacienteNotFoundException;
-import Felipe.API2.HttpCliente.CepHttpCliente;
 import Felipe.API2.Repository.PacienteRepository;
-import Felipe.API2.dto.Estado;
-import Felipe.API2.dto.PacienteDTO;
-import Felipe.API2.entity.Endereco;
 import Felipe.API2.entity.Paciente;
 import Felipe.API2.service.PacienteService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,10 +36,6 @@ public class PacienteControllerTest {
     PacienteService pacienteService;
     @MockBean
     PacienteRepository pacienteRepository;
-    @MockBean
-    CepHttpCliente cepHttpCliente;
-    @MockBean
-    Endereco endereco;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -95,7 +86,6 @@ public class PacienteControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0));
 
-        // Verify
         verify(pacienteService,times(1)).obterTodos();
     }
 
@@ -119,17 +109,19 @@ public class PacienteControllerTest {
     @DisplayName("Deve inserir um novo paciente")
     public void testInserirPaciente() throws Exception {
 
-        PacienteDTO pacienteDTO = new PacienteDTO();
-        pacienteDTO.setNome("Felipe");
-        pacienteDTO.setSobrenome("Santos");
+            Paciente paciente1 = new Paciente();
+            paciente1.setNome("Felipe");
+            paciente1.setSobrenome("Santos");
+
+        when(pacienteService.inserir(Mockito.any(Paciente.class))).thenReturn(paciente1);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/Pacientes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pacienteDTO)))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value(pacienteDTO.getNome()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.sobrenome").value(pacienteDTO.getSobrenome()));
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(paciente1)))
+                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value(paciente1.getNome()))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.sobrenome").value(paciente1.getSobrenome()));
 
             verify(pacienteService,times(1)).inserir(Mockito.any());
     }
@@ -155,15 +147,15 @@ public class PacienteControllerTest {
     public void testAtualizar() throws Exception {
 
         String pacienteId = "653d254a70793512735a8edf";
-        PacienteDTO pacienteDTO = new PacienteDTO();
-        pacienteDTO.setNome("NovoNome");
-        pacienteDTO.setSobrenome("NovoSobrenome");
+        Paciente paciente = new Paciente();
+        paciente.setNome("NovoNome");
+        paciente.setSobrenome("NovoSobrenome");
 
-        Paciente pacienteAtualizado = new Paciente(pacienteDTO);
-        when(pacienteService.atualizar(pacienteDTO, pacienteId)).thenReturn(pacienteAtualizado);
+        Paciente pacienteAtualizado = new Paciente();
+        when(pacienteService.atualizar(paciente, pacienteId)).thenReturn(pacienteAtualizado);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/Pacientes/{id}", pacienteId)
-                        .content(asJsonString(pacienteDTO))
+                        .content(asJsonString(paciente))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.nome").value("NovoNome"))

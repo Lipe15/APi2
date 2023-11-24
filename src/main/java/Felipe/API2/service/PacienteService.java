@@ -76,7 +76,7 @@ public class PacienteService {
         }
     }
     public Optional<Paciente> obterPacientesPorCPF(String cpf) {
-        Optional<Paciente> pacienteOptional = pacienteRepository.findById(cpf);
+        Optional<Paciente> pacienteOptional = Optional.ofNullable(pacienteRepository.findByCpf(cpf));
         if(pacienteOptional.isPresent()){
             return pacienteOptional;
 

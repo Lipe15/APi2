@@ -35,7 +35,6 @@ public class PacienteService {
     }
 
     public Paciente inserir(Paciente paciente) {
-        PacienteDTO pacienteDTO = new PacienteDTO();
         if (pacienteRepository.existsByCpf(paciente.getCpf())) {
             throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + paciente.getCpf());
         }
@@ -61,6 +60,7 @@ public class PacienteService {
 
         if (paciente.isPresent()) {
             pacienteRepository.delete(paciente.get());
+
         } else {
             throw new PacienteNotFoundException("Paciente não encontrado com o ID: " + id);
         }
@@ -169,7 +169,8 @@ public class PacienteService {
             pacienteExistente.setCpf(pacienteDTO.getCpf());
             pacienteExistente.setDataNascimento(pacienteDTO.getDataNascimento());
             pacienteExistente.setSexo(pacienteDTO.getSexo());
-            pacienteExistente.setContato(pacienteDTO.getContato());
+            pacienteExistente.getEndereco().setCep(pacienteDTO.getCep());
+
 
             return pacienteRepository.save(pacienteExistente);
         } else {

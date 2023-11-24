@@ -35,6 +35,7 @@ public class PacienteService {
     }
 
     public Paciente inserir(Paciente paciente) {
+        PacienteDTO pacienteDTO = new PacienteDTO();
         if (pacienteRepository.existsByCpf(paciente.getCpf())) {
             throw new CpfDuplicadoException("Já existe um paciente com o mesmo número de CPF: " + paciente.getCpf());
         }
@@ -42,8 +43,8 @@ public class PacienteService {
         if (dataNascimento != null && dataNascimento.isAfter(LocalDate.now())) {
             throw new DataNascimentoFuturaException("A data de nascimento não pode ser no futuro.");
         }
-        if (!"masculino".equals(paciente.getSexo()) && !"feminino".equals(paciente.getSexo())) {
-            throw new SexoInvalidoException("O sexo do paciente deve ser 'masculino' ou 'feminino ");
+        if (!"masculino".equalsIgnoreCase(paciente.getSexo()) && !"feminino".equalsIgnoreCase(paciente.getSexo())) {
+            throw new SexoInvalidoException("O sexo do paciente deve ser 'masculino' ou 'feminino' ");
         }
         try {
             pacienteRepository.insert(paciente);
@@ -51,6 +52,7 @@ public class PacienteService {
         } catch (Exception ex) {
             throw new PacienteNotFoundException("Não foi possível inserir o paciente.");
         }
+
     }
 
 
@@ -72,6 +74,17 @@ public class PacienteService {
         } else {
             throw new PacienteNotFoundException("Paciente não encontrado com o ID: " + id);
         }
+    }
+    public Optional<Paciente> obterPacientesPorCPF(String cpf) {
+        Optional<Paciente> pacienteOptional = pacienteRepository.findById(cpf);
+        if(pacienteOptional.isPresent()){
+            return pacienteOptional;
+
+        }else {
+            throw new UfNotFoundException("Não foi encontrado paciente para cpf identificado: " + cpf);
+        }
+
+
     }
 
     public List<Estado> obterPacientesPorUf(String uf) {
@@ -125,6 +138,7 @@ public class PacienteService {
         } catch (Exception ex) {
             throw new UfNotFoundException("Não foram encontrados pacientes para a UF especificada: " + uf);
         }
+
 
     }
 

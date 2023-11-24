@@ -16,6 +16,8 @@ public class Estado {
     private String cpf;
     private int idade;
 
+    public Estado(String nome, String bairro, String localidade, String uf, LocalDate dataNascimento, String cpf) {
+    }
     public void calcularIdade(LocalDate dataNascimento) {
         if (dataNascimento != null) {
             LocalDate hoje = LocalDate.now();

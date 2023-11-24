@@ -10,6 +10,7 @@ public interface PacienteRepository extends MongoRepository <Paciente, String> {
 
     Paciente save(Paciente paciente);
     List<Paciente> findByEndereco_Uf(String uf);
+    Paciente findByCpf(String cpf);
 
     boolean existsByCpf(String cpf);
 }

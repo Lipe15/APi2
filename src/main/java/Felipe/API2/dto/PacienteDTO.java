@@ -20,7 +20,6 @@ public class PacienteDTO {
         @Id
         private String id;
         @NotBlank(message = "Nome do paciente não pode estar em branco.")
-        @Pattern(regexp = "^[A-Z]+(.)*", message = "Campo nome deve iniciar com letra maiúscula.")
         private String nome;
         @NotBlank(message = "O Sobrenome do paciente não pode estar em branco.")
         private String sobrenome;
@@ -30,7 +29,7 @@ public class PacienteDTO {
         private LocalDate dataNascimento;
         private String contato;
         private String cep;
-        @NotBlank(message = "O CPF do paciente não pode estar em branco.")
+        @NotBlank(message = "O sexo do paciente não pode estar em branco.")
         private String sexo;
         private String uf;
         private String bairro;

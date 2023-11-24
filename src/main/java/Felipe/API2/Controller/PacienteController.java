@@ -69,6 +69,17 @@ public class PacienteController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao boter pacientes por UF", ex);
         }
     }
+    @GetMapping("/por-cpf/{cpf}")
+    public ResponseEntity<Paciente> obterPacientesPorCPF(@PathVariable String cpf) {
+        try {
+            logger.info("Buscando Pacientes por CPF: {}", cpf);
+            Paciente pacientesDTO = pacienteService.obterPacientesPorCPF(cpf);
+            return ResponseEntity.ok(pacientesDTO);
+        } catch (Exception ex) {
+            logger.error("Erro ao obter pacientes por CPF", ex);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao boter pacientes por CPF", ex);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Paciente> inserir(@RequestBody @Valid PacienteDTO pacienteDTO) {

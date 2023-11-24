@@ -127,6 +127,16 @@ public class PacienteService {
         }
 
     }
+    public Paciente obterPacientesPorCPF(String cpf) {
+        try {
+
+              return pacienteRepository.findByCpf(cpf);
+
+        } catch (Exception ex) {
+            throw new UfNotFoundException("Não foi encontrado paciente para cpf identificado: " + cpf);
+        }
+
+    }
 
     public Paciente atualizar(PacienteDTO pacienteDTO, String id) {
         Optional<Paciente> optionalPaciente = findByid(id);
